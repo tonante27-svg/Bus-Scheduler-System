@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <description>Bus Type</description>
+    <inlineHelpText>Bus Model - prices may vary due to type.</inlineHelpText>
+    <label>Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Standard Coach</fullName>
+                <default>false</default>
+                <label>Standard Coach</label>
+            </value>
+            <value>
+                <fullName>Luxury Shuttle</fullName>
+                <default>false</default>
+                <label>Luxury Shuttle</label>
+            </value>
+            <value>
+                <fullName>Double Decker</fullName>
+                <default>false</default>
+                <label>Double Decker</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
