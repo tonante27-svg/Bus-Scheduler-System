@@ -1,6 +1,4 @@
-Trigger CreateNewBus on Bus__c  ( after insert){
-	
-	Bus__c newBus = Trigger.new;
-	BusSeatCreationService.createSeating(newBus.Id);
-  
+trigger CreateNewBus on Bus__c (after insert) {
+    // Pass the entire collection to keep the transactions completely bulk-safe
+    BusSeatCreationService.createSeating(Trigger.new);
 }

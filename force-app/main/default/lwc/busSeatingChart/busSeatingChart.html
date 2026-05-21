@@ -1,0 +1,40 @@
+<template>
+    <lightning-card title="Bus Seating Chart" icon-name="utility:table">
+        <div class="slds-var-m-around_medium">
+            
+            <template if:true={seats}>
+                <div class="bus-grid slds-box slds-theme_shade">
+                    <template for:each={seats} for:item="seat">
+                        <div key={seat.Id} class="seat-container">
+                            
+                            <template if:true={seat.Is_Booked__c}>
+                                <button 
+                                    class="slds-button slds-button_neutral seat-button booked" 
+                                    disabled>
+                                    {seat.Name}
+                                </button>
+                            </template>
+
+                            <template if:false={seat.Is_Booked__c}>
+                                <button 
+                                    class="slds-button slds-button_success seat-button available" 
+                                    data-seatid={seat.Id} 
+                                    onclick={handleSeatClick}>
+                                    {seat.Name}
+                                </button>
+                            </template>
+
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <template if:true={error}>
+                <div class="slds-text-color_error">
+                    Error loading seating chart. Please verify the Bus record.
+                </div>
+            </template>
+            
+        </div>
+    </lightning-card>
+</template>

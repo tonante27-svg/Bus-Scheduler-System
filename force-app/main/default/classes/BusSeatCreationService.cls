@@ -16,7 +16,7 @@ public with sharing class BusSeatCreationService {
 
         // Loop through every bus being inserted simultaneously
         for (Bus__c bus : newBuses) {
-            seatsToInsert.addAll(generateSeatsForBus(bus));
+            seatsToInsert.addAll(BusSeatCreationService.generateSeatsForBus(bus));
         }
         
         // Execute a single bulk DML statement outside the master loops
@@ -28,13 +28,12 @@ public with sharing class BusSeatCreationService {
      * @param bus The Bus__c record to generate seats for
      * @return List<Bus_Seat__c> The list of seats generated for this bus
      */
-    private static List<Bus_Seat__c> generateSeatsForBus(Bus__c bus) {
+    public static List<Bus_Seat__c> generateSeatsForBus(Bus__c bus) {
         List<Bus_Seat__c> busSeats = new List<Bus_Seat__c>();
         
         for (Integer row = 0; row < MAX_ROWS; row++) {
             for (Integer col = 0; col < MAX_SEATS_PER_ROW; col++) {
                 String seatLetter = SEAT_LETTERS[col];
-                
                 busSeats.add(new Bus_Seat__c(
                     Bus__c = bus.Id, 
                     Name = bus.Name + '-' + row + seatLetter, 
@@ -52,7 +51,7 @@ public with sharing class BusSeatCreationService {
      * @description Inserts seats with error handling and logging
      * @param seatsToInsert The list of Bus_Seat__c records to insert
      */
-    private static void insertSeatsWithErrorHandling(List<Bus_Seat__c> seatsToInsert) {
+    public static void insertSeatsWithErrorHandling(List<Bus_Seat__c> seatsToInsert) {
         if (seatsToInsert.isEmpty()) {
             return;
         }

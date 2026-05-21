@@ -1,0 +1,25 @@
+/* 1. Turn the container into a responsive grid with 5 columns (A, B, Aisle, C, D) */
+.bus-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) 40px repeat(2, 1fr);
+    grid-gap: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* 2. Sizing your seat buttons uniformly */
+/* Note: Use slds-text-align_center utility class in HTML for text alignment */
+.seat-button {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+/* 3. The Aisle Magic */
+.seat-container:nth-child(4n+3) {
+    grid-column: 4;
+}
+.seat-container:nth-child(4n+0) {
+    grid-column: 5;
+}
