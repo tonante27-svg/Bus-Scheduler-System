@@ -3,50 +3,67 @@
  * This class generates a seating arrangement for buses with configurable rows and seats per row.
  */
 public with sharing class BusSeatCreationService {
-    private final Integer MAXROW = 10;
-    private final Integer MAXSEATS = 4;
+    private static final Integer MAX_ROWS = 10;
+    private static final Integer MAX_SEATS_PER_ROW = 4;
+    private static final List<String> SEAT_LETTERS = new List<String>{'A', 'B', 'C', 'D'};
     
     /**
-     * @description Creates a seating arrangement for a given bus by generating seat records
-     * in a grid pattern with row numbers and seat letters (A, B, C, D).
-     * @param busId The Id of the Bus__c record for which seats should be created
+     * @description Bulk-safely creates a seating arrangement for an incoming list of buses
+     * @param newBuses The List of Bus__c records from Trigger.new
      */
-    public void createSeating(Id busId){
-        List<Bus__c> newBus = [SELECT Id,Name FROM Bus__c WHERE Id = :busId WITH USER_MODE];
+    public static void createSeating(List<Bus__c> newBuses) {
+        List<Bus_Seat__c> seatsToInsert = new List<Bus_Seat__c>();
 
-        // Create the seating of 4 seats per row
-        List<Bus_Seat__c> seats = new List<Bus_Seat__c>();
-
-        for(Integer row= 0; row < MAXROW; row++){
-            for(Integer col = 0; col < MAXSEATS; col++){
-                String whichSeat;
-                switch on col{
-                    when 1{
-                        whichSeat = 'A';
-                    }
-                    when 2{
-                        whichSeat = 'B';
-                    }
-                    when 3{
-                        whichSeat = 'C';
-                    }
-                    when else{
-                        whichSeat = 'D';
-                    }
-                }
-
-                seats.add( new Bus_Seat__c(Bus__c = newBus[0].Id, Name = newBus[0].Name+'-'+row+whichSeat, is_Booked__c = false, Row_Number__c=row, Seat_Letter__c = whichSeat ));
-
+        // Loop through every bus being inserted simultaneously
+        for (Bus__c bus : newBuses) {
+            seatsToInsert.addAll(generateSeatsForBus(bus));
+        }
+        
+        // Execute a single bulk DML statement outside the master loops
+        insertSeatsWithErrorHandling(seatsToInsert);
+    }
+    
+    /**
+     * @description Generates all seat records for a single bus
+     * @param bus The Bus__c record to generate seats for
+     * @return List<Bus_Seat__c> The list of seats generated for this bus
+     */
+    private static List<Bus_Seat__c> generateSeatsForBus(Bus__c bus) {
+        List<Bus_Seat__c> busSeats = new List<Bus_Seat__c>();
+        
+        for (Integer row = 0; row < MAX_ROWS; row++) {
+            for (Integer col = 0; col < MAX_SEATS_PER_ROW; col++) {
+                String seatLetter = SEAT_LETTERS[col];
+                
+                busSeats.add(new Bus_Seat__c(
+                    Bus__c = bus.Id, 
+                    Name = bus.Name + '-' + row + seatLetter, 
+                    is_Booked__c = false, 
+                    Row_Number__c = row, 
+                    Seat_Letter__c = seatLetter
+                ));
             }
         }
-        //check for any failures during seat creation
-        Database.SaveResult[] res = Database.insert(seats, false, AccessLevel.USER_MODE);
-        for(Integer i = 0; i < res.size(); i++){
-                if(res[i].isSuccess()){
-                    System.debug('Seat created successfully: ' + seats[i].Name);
-                } else {
-                    System.debug('Failed to create seat: ' + seats[i].Name + ' Error: ' + res[i].getErrors()[0].getMessage());
-                }
+        
+        return busSeats;
+    }
+    
+    /**
+     * @description Inserts seats with error handling and logging
+     * @param seatsToInsert The list of Bus_Seat__c records to insert
+     */
+    private static void insertSeatsWithErrorHandling(List<Bus_Seat__c> seatsToInsert) {
+        if (seatsToInsert.isEmpty()) {
+            return;
+        }
+        
+        Database.SaveResult[] results = Database.insert(seatsToInsert, false, AccessLevel.USER_MODE);
+        
+        for (Integer i = 0; i < results.size(); i++) {
+            if (!results[i].isSuccess()) {
+                System.debug('Failed to create seat: ' + seatsToInsert[i].Name + 
+                             ' Error: ' + results[i].getErrors()[0].getMessage());
             }
+        }
     }
 }
