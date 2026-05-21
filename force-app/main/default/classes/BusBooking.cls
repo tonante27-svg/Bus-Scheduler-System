@@ -23,9 +23,17 @@ public with sharing class BusBooking {
     public static List<Bus_Seat__c> getBusSeats(Id busId){
         List<Bus_Seat__c> seatsToBook =[SELECT Id,Row_Number__c, Seat_Letter__c, Is_Booked__c,Class_Type__c, Name FROM  Bus_Seat__c WHERE Bus__c =: busId WITH USER_MODE ORDER BY Row_Number__c ASC, Seat_Letter__c ASC];
       return seatsToBook;
-
-
-      
         
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Bus__c> getActiveBuses() {
+        return [
+            SELECT Id, Name, Vehicle_ID_Number__c 
+            FROM Bus__c 
+            WHERE Status__c = 'Active' 
+            WITH USER_MODE 
+            ORDER BY Name ASC
+        ];
     }
 }

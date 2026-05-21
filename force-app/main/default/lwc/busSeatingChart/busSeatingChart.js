@@ -1,15 +1,37 @@
-import { LightningElement, api,wire } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
 import { refreshApex } from '@salesforce/apex'; // 1. Import refreshApex
+import {subscribe, MessageContext} from 'lightning/messageService';
+import BUS_SELECTION_CHANNEL from '@salesforce/messageChannel/BusSelectionChannel__c';
 import getBusSeats from '@salesforce/apex/BusBooking.getBusSeats'; // (Assuming this is your retrieval method name)
 import bookSeat from '@salesforce/apex/BusBooking.bookSeat';
 
 export default class BusSeatingChart extends LightningElement {
-    @api busId;
+    busId;
     seats;
     error;
     wiredSeatsResult; // 2. Track the provisioned object container
+    subscription = null;
 
+    @wire(MessageContext)
+    messageContext;
+
+    connectedCallback() {
+        this.subscription = subscribe(this.messageContext, BUS_SELECTION_CHANNEL, (message) => {
+            this.busId = message.busId;
+        }); 
+    }
+
+     disconnectedCallback() {
+        if (this.subscription) {
+            this.subscription = null;
+        }
+    }
+
+    handleBusSelection(message) {
+        this.busId = message.busId;
+    }
+    
     // 3. Wire your retrieval method and store the whole result
     @wire(getBusSeats, { busId: '$busId' })
     wiredSeats(result) {

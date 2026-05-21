@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>BusSelectionChannel</masterLabel>
+    <description>Message channel to communicate selected Bus record ID across dashboard components.</description>
+    <isExposed>true</isExposed>
+    <lightningMessageFields>
+        <fieldName>busId</fieldName>
+        <description>The Salesforce Record ID of the selected Bus.</description>
+    </lightningMessageFields>
+</LightningMessageChannel>

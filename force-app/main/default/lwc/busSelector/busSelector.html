@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Select a Fleet Vehicle" icon-name="utility:classic_interface">
+        <div class="slds-var-m-around_medium">
+            <lightning-combobox
+                name="busSelector"
+                label="Active Buses"
+                value={selectedBusId}
+                placeholder="Choose a Bus..."
+                options={busOptions}
+                onchange={handleBusChange}>
+            </lightning-combobox>
+        </div>
+    </lightning-card>
+</template>
