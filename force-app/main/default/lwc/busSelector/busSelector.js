@@ -1,11 +1,11 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire,track } from 'lwc';
 import { publish, MessageContext } from 'lightning/messageService';
 import BUS_SELECTION_CHANNEL from '@salesforce/messageChannel/BusSelectionChannel__c';
 import getActiveBuses from '@salesforce/apex/BusBooking.getActiveBuses';
 
 export default class BusSelector extends LightningElement {
     selectedBusId = '';
-    busOptions = [];
+    @track busOptions = [];
 
     @wire(MessageContext)
     messageContext;

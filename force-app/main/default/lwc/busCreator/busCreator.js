@@ -13,6 +13,8 @@ import TYPE from '@salesforce/schema/Bus__c.Type__c';
 import VEHICLE_ID_NUMBER from '@salesforce/schema/Bus__c.Vehicle_ID_Number__c';
 
 export default class BusCreator extends LightningElement {
+    // Expose your object and fields directly to the HTML form
+    busObject = BUS_OBJECT;
     // 1. Your dynamic array list for the form loop
     fieldList = [VEHICLE_ID_NUMBER, TYPE, STATUS, TOTAL_CAPACITY, LAST_SERVICE_DATE];
 
@@ -32,30 +34,22 @@ export default class BusCreator extends LightningElement {
         const vehicleNumber = event.detail.fields[this.vehicleIdNumberField].value;
 
         // Call your bulkified service (passing an object array to match your List<Bus__c> parameter)
-        generateSeats({ buses: [{ Id: newBusId }] })
-            .then(() => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success!',
-                        message: `Vehicle ${vehicleNumber} created and 40 seats initialized.`,
-                        variant: 'success'
-                    })
-                );
-                
-                // Reset the form fields for the next entry
-                const inputFields = this.template.querySelectorAll('lightning-input-field');
-                if (inputFields) {
-                    inputFields.forEach(field => field.reset());
-                }
+        // Display success toast (the trigger handles seat generation in the background)
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Success!',
+                message: `Bus ${vehicleNumber} created. Seating layout is generating automatically.`,
+                variant: 'success'
             })
-            .catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error generating virtual seating layout',
-                        message: error.body ? error.body.message : 'Unknown error.',
-                        variant: 'error'
-                    })
-                );
+        );
+                
+        // Reset the form fields for the next entry
+         const inputFields = this.template.querySelectorAll('lightning-input-field');
+        if (inputFields) {
+            inputFields.forEach(field => {
+                field.reset();
             });
+        }
+           
     }
 }
