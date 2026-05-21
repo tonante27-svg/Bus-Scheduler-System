@@ -1,0 +1,48 @@
+<template>
+    <lightning-card title="Record Form" icon-name="standard:lead">
+         <div class="slds-var-m-around_medium">
+             <p class="slds-text-body_regular">This is a simple form to create a record. It uses the onsuccess event to display a toast message when the record is created successfully.</p>
+         </div>
+     </lightning-card>
+    <lightning-record-form
+        object-api-name={objectName}
+        fields={fieldList}
+        record-id={recordId}
+        onsuccess={successHandler}
+        mode="view">
+    </lightning-record-form>
+    <lightning-card title="Record View Form" icon-name="standard:lead">
+         <div class="slds-var-m-around_medium">
+             <p class="slds-text-body_regular">This is a simple form to create a record. It uses the onsuccess event to display a toast message when the record is created successfully.</p>
+         </div>
+         <lightning-record-view-form
+            record-id={recordId}
+            object-api-name={objectName}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_3-of-12"><lightning-output-field field-name="Name"></lightning-output-field></div>
+            <div class="slds-col slds-size_5-of-12"><lightning-output-field field-name="Phone"></lightning-output-field></div>
+        </div>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_7-of-12"><lightning-output-field field-name="Company"></lightning-output-field></div> 
+        </div>    
+    </lightning-record-view-form>
+     </lightning-card>
+      <lightning-card title="Record Edit Form" icon-name="standard:lead">
+         <div class="slds-var-m-around_medium">
+             <p class="slds-text-body_regular">This is a simple form to Edit a record.</p>
+         </div>
+         <lightning-record-edit-form
+            object-api-name={objectName}
+            onsubmit={handleSubmit}>
+        <div class="slds-grid slds-gutters">
+            <div class="slds-col slds-size_3-of-12"><lightning-input-field field-name="Name"></lightning-input-field></div>
+            <div class="slds-col slds-size_5-of-12"><lightning-input-field field-name="Phone"></lightning-input-field></div>
+            <div class="slds-col slds-size_4-of-12"><lightning-input-field field-name="Company"></lightning-input-field></div> 
+        </div>
+        <div class="slds-grid slds-gutters">
+             <lightning-button label="Cancel" type=" button" onclick={clearFields}></lightning-button>
+            <lightning-button label="Save" type="submit"></lightning-button>
+        </div>
+        </lightning-record-edit-form>
+     </lightning-card>
+</template>

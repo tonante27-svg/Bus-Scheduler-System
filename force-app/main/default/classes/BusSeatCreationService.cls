@@ -11,6 +11,7 @@ public with sharing class BusSeatCreationService {
      * @description Bulk-safely creates a seating arrangement for an incoming list of buses
      * @param newBuses The List of Bus__c records from Trigger.new
      */
+    @AuraEnabled
     public static void createSeating(List<Bus__c> newBuses) {
         List<Bus_Seat__c> seatsToInsert = new List<Bus_Seat__c>();
 
