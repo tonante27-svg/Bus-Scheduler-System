@@ -7,4 +7,8 @@
         <fieldName>busId</fieldName>
         <description>The Salesforce Record ID of the selected Bus.</description>
     </lightningMessageFields>
+    <lightningMessageFields>
+    <fieldName>busFare</fieldName>
+        <description>The base cost/fare assigned to this specific bus route.</description>
+    </lightningMessageFields>
 </LightningMessageChannel>

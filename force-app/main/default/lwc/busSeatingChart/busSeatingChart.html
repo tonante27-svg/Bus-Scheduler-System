@@ -1,7 +1,7 @@
 <template>
     <lightning-card title="Bus Seating Chart" icon-name="utility:table">
         <div class="slds-var-m-around_medium">
-            
+            <img src={luxuryBusImage} alt="Luxury Liner Layout Configuration" class="bus-graphic"/>
             <template if:true={seats}>
                 <div class="bus-grid slds-box slds-theme_shade">
                     <template for:each={seats} for:item="seat">

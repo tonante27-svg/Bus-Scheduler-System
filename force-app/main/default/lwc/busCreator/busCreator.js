@@ -11,8 +11,11 @@ import STATUS from '@salesforce/schema/Bus__c.Status__c';
 import TOTAL_CAPACITY from '@salesforce/schema/Bus__c.Total_Capacity__c';
 import TYPE from '@salesforce/schema/Bus__c.Type__c';
 import VEHICLE_ID_NUMBER from '@salesforce/schema/Bus__c.Vehicle_ID_Number__c';
+// Static Resource for bus image
+import BUS_ASSETS from '@salesforce/resourceUrl/busAssets';
 
 export default class BusCreator extends LightningElement {
+    coachBusImage = `${BUS_ASSETS}/coachBus_side.png`;
     // Expose your object and fields directly to the HTML form
     busObject = BUS_OBJECT;
     // 1. Your dynamic array list for the form loop

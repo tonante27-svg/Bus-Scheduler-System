@@ -1,7 +1,8 @@
 <template>
     <lightning-card title="Add New Vehicle to Fleet" icon-name="utility:custom_apps">
         <div class="slds-var-p-around_medium">
-            
+             <img src={coachBusImage} alt="Coach Bus Layout Configuration" class="bus-graphic"/>
+
             <lightning-record-edit-form 
                 object-api-name={busObject} 
                 onsuccess={handleBusSuccess}>
