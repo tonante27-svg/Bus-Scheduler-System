@@ -1,0 +1,53 @@
+<template>
+    <lightning-card title="Mainatin a Fleet Vehicle" icon-name="utility:classic_interface">
+        <div class="slds-var-m-around_medium">
+             <img src={futureBusImage} alt="Future Bus Maintenance" class="bus-graphic"/>
+
+            <lightning-combobox
+                name="busSelector"
+                label="Buses"
+                value={selectedBusId}
+                placeholder="Choose a Bus..."
+                options={busOptions}
+                onchange={handleBusChange}>
+            </lightning-combobox>
+        </div>
+    </lightning-card>
+    <lightning-card title="Record Edit Form" icon-name="vcustom:custom98">
+    <div class="slds-var-m-around_medium">
+        <p class="slds-text-body_regular slds-var-m-bottom_medium">Edit Bus Record Fields.</p>
+        
+        <lightning-record-edit-form
+            object-api-name={objectName}
+            record-id={selectedBusId}
+            onsuccess={handleSuccess}>
+            
+            <div class="slds-grid slds-wrap slds-gutters">
+                <template for:each={fieldList} for:item="field">
+                    <div key={field.fieldApiName} class="slds-col slds-size_1-of-3 slds-var-m-bottom_small">
+                        <lightning-input-field field-name={field}></lightning-input-field>
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-var-m-top_medium slds-grid  slds-gutters">
+                <div class="slds-col">
+                    <lightning-button 
+                        variant="neutral" 
+                        label="Cancel" 
+                        type="button" 
+                        onclick={clearFields}>
+                    </lightning-button>
+                    <lightning-button 
+                        variant="brand" 
+                        label="Save" 
+                        type="submit" 
+                        class="slds-var-m-left_small">
+                    </lightning-button>
+                </div>
+            </div>
+
+        </lightning-record-edit-form>
+    </div>
+</lightning-card>
+</template>

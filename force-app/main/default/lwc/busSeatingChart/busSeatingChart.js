@@ -11,7 +11,6 @@ import BUS_ASSETS from '@salesforce/resourceUrl/busAssets';
 export default class BusSeatingChart extends LightningElement {
    // 2. Use string interpolation to point to the specific PNG inside the folder
     luxuryBusImage = `${BUS_ASSETS}/luxuryLinerBus.png`;
-   // coachBusImage = `${BUS_ASSETS}/coach.png`;
     busId;
     seats;
     error;
