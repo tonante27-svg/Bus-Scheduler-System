@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="Create Bus Route" icon-name="utility:custom_apps">
+        <div class="slds-var-p-around_medium">
+                <img src={routeMapImage} alt="Route Map For Bus Routes" class="hero-image"/>
+            
+                <div class="content-panel">
+                    <lightning-record-edit-form
+                        object-api-name={routeObject}
+                        onsubmit={handleSubmit}
+                        onsuccess={handleRouteSuccess}>
+                        <lightning-messages></lightning-messages>
+                        <div class="slds-grid slds-gutters slds-wrap">
+                            <template for:each={fieldList} for:item="field">
+                                <div key={field.fieldApiName} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                                    <lightning-input-field field-name={field}></lightning-input-field>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="slds-var-m-top_medium">
+                            <lightning-button 
+                                variant="brand" 
+                                type="submit" 
+                                label="Create Route">
+                            </lightning-button>
+                        </div>
+                        
+                    </lightning-record-edit-form>
+                </div>
+           
+        </div>
+    </lightning-card>
+    
+</template>

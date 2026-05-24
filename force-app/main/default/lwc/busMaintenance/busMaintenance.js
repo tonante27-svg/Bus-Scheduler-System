@@ -12,6 +12,7 @@ import BUS_ASSETS from '@salesforce/resourceUrl/busAssets';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BusMaintenance extends LightningElement {
+   
     selectedBusId = '';
     @track busOptions = [];
     objectName = BUS_OBJECT.objectApiName;
@@ -43,7 +44,9 @@ export default class BusMaintenance extends LightningElement {
 
    clearFields() {
         console.log('clearFields method called');
-        // Query all input fields directly from the template DOM
+        
+       // Query all input fields directly from the template DOM
+        
         const inputFields = this.template.querySelectorAll('lightning-input-field');
         if (inputFields) {
             inputFields.forEach(field => {
@@ -52,7 +55,9 @@ export default class BusMaintenance extends LightningElement {
         }
     }
     handleBusChange(event){
+        console.log('Selected Bus Id:', this.selectedBusId);
         this.selectedBusId = event.detail.value;
+       
     }
 
     handleSuccess(event) {

@@ -35,6 +35,17 @@ export default class BusCreator extends LightningElement {
         
         // Grab the vehicle number using the property you just created!
         const vehicleNumber = event.detail.fields[this.vehicleIdNumberField].value;
+        const vinPattern = /^BS\d{4}$/;
+        if (!vinPattern.test(vehicleNumber)) {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Error',
+                    message: 'Vehicle ID Number must start with "BS" followed by 4 digits (e.g., BS1234).',
+                    variant: 'error'
+                })
+            );
+            return; // Stop further processing if validation fails
+        }
 
         // Call your bulkified service (passing an object array to match your List<Bus__c> parameter)
         // Display success toast (the trigger handles seat generation in the background)

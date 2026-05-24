@@ -1,0 +1,30 @@
+.background-wrapper{
+
+    background-image: url('/resource/busAssets/FloridaCities.jpg');
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    min-height: 100vh;
+
+    padding: 2rem;
+
+    border-radius: 16px;
+}
+
+.overlay-panel {
+
+    background: rgba(255, 255, 255, 0.90);
+
+    backdrop-filter: blur(3px);
+
+    border-radius: 16px;
+
+    padding: 1rem;
+
+    box-shadow:
+        0 4px 18px rgba(0,0,0,0.20);
+}
