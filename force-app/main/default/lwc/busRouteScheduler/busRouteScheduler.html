@@ -1,0 +1,43 @@
+<template>
+    <lightning-card title="Bus Route Scheduler Dashboard" icon-name="custom:custom68">
+        <div class="slds-var-p-around_medium">
+            
+            <lightning-combobox
+                name="busSelector"
+                label="Select a Bus to Schedule"
+                value={selectedBusId}
+                placeholder="Choose Active Bus..."
+                options={busOptions}
+                onchange={handleBusChange}>
+            </lightning-combobox>
+
+            <template if:true={selectedBusId}>
+                <div class="slds-var-m-top_medium">
+                    <lightning-record-edit-form 
+                        object-api-name={objectName} 
+                        onsuccess={handleSuccess}>
+                        
+                        <div class="slds-grid slds-wrap slds-gutters">
+                            <template for:each={fieldList} for:item="field">
+                                <div key={field} class="slds-col slds-size_1-of-2 slds-var-m-bottom_small">
+                                    
+                                    <lightning-input-field field-name={field}></lightning-input-field>
+                                    
+                                </div>
+                            </template>
+
+                            <div class="slds-col slds-size_1-of-2 slds-var-m-bottom_small">
+                                <lightning-input-field field-name="Bus__c" value={selectedBusId}></lightning-input-field>
+                            </div>
+                        </div>
+
+                        <div class="slds-var-m-top_medium">
+                            <lightning-button variant="brand" type="submit" label="Create Route Schedule Slot"></lightning-button>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

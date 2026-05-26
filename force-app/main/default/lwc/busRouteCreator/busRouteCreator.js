@@ -23,8 +23,7 @@ export default class BusRouteCreator extends LightningElement {
     ];
 
     nameField = NAME.fieldApiName;
-
-    handleSubmit(event) {
+ handleSubmit(event) {
 
         event.preventDefault();
 
@@ -52,6 +51,9 @@ export default class BusRouteCreator extends LightningElement {
             .querySelector('lightning-record-edit-form')
             .submit(fields);
     }
+
+   
+
 
     handleRouteSuccess(event) {
 

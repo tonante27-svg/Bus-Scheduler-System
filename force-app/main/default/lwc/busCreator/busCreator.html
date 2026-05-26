@@ -1,25 +1,50 @@
 <template>
     <lightning-card title="Add New Vehicle to Fleet" icon-name="utility:custom_apps">
         <div class="slds-var-p-around_medium">
-             <img src={coachBusImage} alt="Coach Bus Layout Configuration" class="bus-graphic"/>
-
             <lightning-record-edit-form 
                 object-api-name={busObject} 
                 onsuccess={handleBusSuccess}>
                 
-                <div class="slds-grid slds-gutters slds-wrap">
-                    <template for:each={fieldList} for:item="field">
-                        <div key={field.fieldApiName} class="slds-col slds-size_1-of-3">
-                            <lightning-input-field field-name={field}></lightning-input-field>
-                        </div>
-                    </template>
+                <div class="slds-grid slds-gutters slds-var-m-bottom_small">
+                    <div class="slds-col slds-size_1-of-3">
+                        <img src={coachBusImage} alt="Coach Bus Layout Configuration" class="bus-graphic"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <lightning-input-field field-name="Type__c"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <lightning-input-field field-name="Status__c"></lightning-input-field>
+                    </div>
+                </div>
+
+                <div class="slds-grid slds-gutters slds-var-m-bottom_small">
+                    <div class="slds-col slds-size_1-of-3"></div>
+                    
+                    <div class="slds-col slds-size_1-of-3">
+                        <lightning-input-field field-name="Total_Capacity__c"></lightning-input-field>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-3">
+                        <label class="custom-label">Last Service Date <span class="info-icon">ℹ</span></label>
+                        <lightning-input-field field-name="Last_Service_Date__c" variant="label-hidden"></lightning-input-field>
+                    </div>
+                </div>
+
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-3"></div>
+                    <div class="slds-col slds-size_1-of-3">
+                        <label class="custom-label">Vehicle ID Number <span class="info-icon">ℹ</span></label>
+                        <lightning-input-field field-name="Vehicle_ID_Number__c" variant="label-hidden"></lightning-input-field>
+                    </div>
+                    <div class="slds-col slds-size_1-of-3"></div>
                 </div>
 
                 <div class="slds-var-m-top_medium">
                     <lightning-button 
                         variant="brand" 
                         type="submit" 
-                        label="Create Bus & Generate Seats">
+                        label="Create Bus & Generate Seats"
+                        class="custom-green-button">
                     </lightning-button>
                 </div>
                 

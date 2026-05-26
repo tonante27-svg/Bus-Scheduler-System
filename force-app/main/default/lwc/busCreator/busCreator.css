@@ -1,0 +1,40 @@
+/* Styling for our custom, wrap-proof labels */
+.custom-label {
+    display: inline-flex;
+    align-items: center;
+    color: #3e3e3c;
+    font-size: 0.75rem;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    margin-bottom: 0.125rem;
+    white-space: nowrap;
+}
+
+/* Faux info icon styling to mimic standard Salesforce styling */
+.info-icon {
+    margin-left: 6px;
+    background-color: #1e6e30; /* Matches your custom green theme */
+    color: white;
+    font-size: 9px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Base structural styles */
+.bus-graphic {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.custom-green-button {
+    --slds-c-button-brand-color-background: #1e6e30;
+    --slds-c-button-brand-color-border: #1e6e30;
+    --slds-c-button-brand-color-background-hover: #154d22;
+}
