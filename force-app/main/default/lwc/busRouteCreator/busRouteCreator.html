@@ -12,9 +12,10 @@
                         <div class="slds-grid slds-gutters slds-wrap">
                             <template for:each={fieldList} for:item="field">
                                 <div key={field.fieldApiName} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
-                                    <lightning-input-field field-name={field}></lightning-input-field>
+                                    <lightning-input-field field-name={field.fieldApiName}></lightning-input-field>
                                 </div>
                             </template>
+                        <lightning-input-field field-name={nameFieldApiName} class="slds-hide"></lightning-input-field>
                         </div>
 
                         <div class="slds-var-m-top_medium">
