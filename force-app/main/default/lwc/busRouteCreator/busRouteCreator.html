@@ -1,34 +1,43 @@
 <template>
-    <lightning-card title="Create Bus Route" icon-name="utility:custom_apps">
+    <lightning-card title="Create Bus Route" icon-name="utility:change_record_type">
         <div class="slds-var-p-around_medium">
                 <img src={routeMapImage} alt="Route Map For Bus Routes" class="hero-image"/>
-            
-                <div class="content-panel">
-                    <lightning-record-edit-form
-                        object-api-name={routeObject}
-                        onsubmit={handleSubmit}
-                        onsuccess={handleRouteSuccess}>
-                        <lightning-messages></lightning-messages>
-                        <div class="slds-grid slds-gutters slds-wrap">
-                            <template for:each={fieldList} for:item="field">
-                                <div key={field.fieldApiName} class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
-                                    <lightning-input-field field-name={field.fieldApiName}></lightning-input-field>
-                                </div>
-                            </template>
-                        <lightning-input-field field-name={nameFieldApiName} class="slds-hide"></lightning-input-field>
-                        </div>
-
-                        <div class="slds-var-m-top_medium">
-                            <lightning-button 
-                                variant="brand" 
-                                type="submit" 
-                                label="Create Route">
-                            </lightning-button>
-                        </div>
-                        
-                    </lightning-record-edit-form>
+                <div class="slds-var-m-around_medium">
+                    <lightning-combobox
+                        name="startLocation"
+                        label="Start Location"
+                        value={startLocation}
+                        placeholder="Choose a City..."
+                        options={cityOptions}
+                        onchange={handleRouteChange}>
+                    </lightning-combobox>
                 </div>
-           
+                <div class="slds-var-m-around_medium">
+                    <lightning-combobox
+                        name="endLocation"
+                        label="End Location"
+                        value={endLocation}
+                        placeholder="Choose a City..."
+                        options={cityOptions}
+                        onchange={handleRouteChange}>
+                    </lightning-combobox>
+                </div>
+               <template if:true={routeNamePreview}>
+                <div class="slds-var-m-top_medium slds-var-p-around_small slds-theme_shade slds-box_border">
+                    <p class="slds-text-title_caps slds-text-color_weak">Generated Route Name Preview</p>
+                    <p class="slds-text-heading_small slds-text-color_success">
+                        {routeNamePreview}
+                    </p>
+                </div>
+            </template>
+
+           <lightning-button 
+                class="slds-var-m-top_medium" 
+                variant="brand" 
+                label="Save Route" 
+                onclick={handleSaveRoute}
+                disabled={isSaveDisabled}>
+            </lightning-button>
         </div>
     </lightning-card>
     

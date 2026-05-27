@@ -1,80 +1,112 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, wire,track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-
-import ROUTE_OBJECT from '@salesforce/schema/Bus_Route__c';
-import START_LOCATION from '@salesforce/schema/Bus_Route__c.Start_Location__c';
-import END_LOCATION from '@salesforce/schema/Bus_Route__c.End_Location__c';
-import NAME from '@salesforce/schema/Bus_Route__c.Name';
+import { createRecord } from 'lightning/uiRecordApi';
 
 // Import Apex function
-import searchMatchingRoute from '@salesforce/apex/BusRouteController.searchMatchingRoute';
+import checkDuplicateRoute from '@salesforce/apex/BusRouteController.searchDuplicateRoute';
+
+// Import the object and field schema
+import ROUTE_OBJECT from '@salesforce/schema/Bus_Route__c';
+import START_LOCATION_FIELD from '@salesforce/schema/Bus_Route__c.Start_Location__c';
+import END_LOCATION_FIELD from '@salesforce/schema/Bus_Route__c.End_Location__c';
 import BUS_ASSETS from '@salesforce/resourceUrl/busAssets';
 
 export default class BusRouteCreator extends LightningElement {
+    @track startLocation = '';
+    @track endLocation = '';
     
     routeMapImage = `${BUS_ASSETS}/FloridaCities.jpg`;
     routeObject = ROUTE_OBJECT;
     
     // Pass the API name strings to the template
-    nameFieldApiName = NAME.fieldApiName;
-    
-    fieldList = [
-        START_LOCATION,
-        END_LOCATION
-    ];
+   // Standardized Central Florida Operational Hubs
+    get cityOptions() {
+        return [
+            { label: 'Zephyrhills', value: 'Zephyrhills' },
+            { label: 'Ybor City', value: 'Ybor City' },
+            { label: 'Tampa (Downtown)', value: 'Tampa' },
+            { label: 'New Tampa', value: 'New Tampa' },
+            { label: 'Orlando', value: 'Orlando' },
+            { label: 'Lakeland', value: 'Lakeland' },
+            { label: 'Clearwater', value: 'Clearwater' },
+            { label: 'Wuachula', value: 'Wuachula' },
+            { label: 'Broopksville', value: 'Broopksville' },
+            { label: 'Dade City', value: 'Dade City' },
+            { label: 'Bushnell', value: 'Bushnell' },
+            { label: 'Sanford', value: 'Sanford' },
+            { label: 'Bartow', value: 'Bartow' },
+            { label: 'Brandon', value: 'Brandon' },
+            { label: 'Sarasota', value: 'Sarasota' },
+            { label: 'St. Petersburg', value: 'St. Petersburg' },
+            { label: 'Port Richey', value: 'Port Richey' },
+            { label: 'Dunedin', value: 'Dunedin' },
+            { label: 'Spring Hill', value: 'Spring Hill' },
+            { label: 'Tarpon Springs', value: 'Tarpon Springs' },
+            { label: 'Ocala', value: 'Ocala' }
+        ];
+    }
 
+    // Combined change handler to process changes and fire the Apex check
+    handleRouteChange(event) {
+        const fieldName = event.target.name;
+        if (fieldName === 'startLocation') {
+            this.startLocation = event.target.value;
+        } else if (fieldName === 'endLocation') {
+            this.endLocation = event.target.value;
+        }
+
+        // Run duplicate check only when both fields have values
+        if (this.startLocation && this.endLocation) {
+            if (this.startLocation === this.endLocation) {
+                this.showToast('Error', 'Start and End locations cannot be the same.', 'error');
+                return;
+            }
+
+            checkDuplicateRoute({ startLoc: this.startLocation, endLoc: this.endLocation })
+                .then(result => {
+                    this.isDuplicate = result;
+                })
+                .catch(error => {
+                    console.error('Error running duplicate check: ', error);
+                });
+        }
+    }
     // Class property to share the calculated name between submit and success handlers
     computedRouteName = ''; 
 
-    async handleSubmit(event) {
-        event.preventDefault();
-        const fields = event.detail.fields;
-
-        const startLocation = fields[START_LOCATION.fieldApiName];
-        const endLocation = fields[END_LOCATION.fieldApiName];
-        const routePattern = /^[A-Za-z\s]+$/;
-
-        // Validation check
-        if (!routePattern.test(startLocation) || !routePattern.test(endLocation)) {
-            this.showToast('Validation Error', 'Start and end locations must contain only alphabetic characters.', 'error');
-            return;
+    get routeNamePreview() {
+        if (this.startLocation && this.endLocation) {
+            return `${this.startLocation} To ${this.endLocation}`;
         }
-
-        try {
-            // 1. Properly call the imported Apex function directly
-            const matchingRoutes = await searchMatchingRoute({ 
-                startLocation: startLocation, 
-                endLocation: endLocation 
-            });
-
-            // Example validation logic: Prevent submission if route exists
-            if (matchingRoutes && matchingRoutes.length > 0) {
-                this.showToast('Duplicate Route', 'A route with these locations already exists.', 'error');
-                return; 
-            }
-
-            // 2. Format and assign the Name field
-            this.computedRouteName = `${startLocation} To ${endLocation}`;
-            fields[NAME.fieldApiName] = this.computedRouteName;
-
-            // 3. Submit the form manually
-            this.template.querySelector('lightning-record-edit-form').submit(fields);
-
-        } catch (error) {
-            this.showToast('Error', 'An error occurred while validating the route.', 'error');
-            console.error(error);
-        }
+        return '';
     }
 
-    handleRouteSuccess(event) {
-        // Use the class property we set during submission
-        this.showToast('Success', `Route "${this.computedRouteName}" created successfully.`, 'success');
+    get isSaveDisabled() {
+        return !(this.startLocation && this.endLocation);
+    }
 
-        // Reset all input fields
-        const inputFields = this.template.querySelectorAll('lightning-input-field');
-        if (inputFields) {
-            inputFields.forEach(field => field.reset());
-        }
+    handleSaveRoute(event) {
+        debugger; // Browser will be forced to stop here sine the framework  skips it during DevTools debug.
+       event.preventDefault(); 
+        
+        const fields = {};
+        fields['Start_Location__c'] = this.startLocation;
+        fields['End_Location__c'] = this.endLocation;
+        // Omit fields['Name'] if you configured Option 1 Formula fields! 
+        // Otherwise keep it if Name is a regular text field.
+        fields['Name'] = this.routeNamePreview; 
+
+        const recordInput = { apiName: "Bus_Route__c", fields };
+        createRecord(recordInput)
+            .then(() => {
+                this.showToast('Success', `Route "${this.routeNamePreview}" created successfully.`, 'success');
+                this.startLocation = '';
+                this.endLocation = '';
+                this.isDuplicate = false;
+            })
+            .catch(error => {
+                this.showToast('Error', `Failed to create route: ${error.body.message}`, 'error');
+            });
     }
 
     // Helper method to keep toast code DRY
