@@ -1,6 +1,7 @@
+@IsTest
 private class BusRouteControllerTest {
-    @isTest
-    static void testSearchMatchingRoute() {
+    @IsTest
+    private static void testSearchMatchingRoute() {
         // Create test data
         Bus_Route__c route1 = new Bus_Route__c(Name = 'Route 1', Start_Location__c = 'Location A', End_Location__c = 'Location B');
         Bus_Route__c route2 = new Bus_Route__c(Name = 'Route 2', Start_Location__c = 'Location A', End_Location__c = 'Location C');
