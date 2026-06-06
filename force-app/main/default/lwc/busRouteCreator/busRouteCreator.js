@@ -86,7 +86,7 @@ export default class BusRouteCreator extends LightningElement {
     }
 
     handleSaveRoute(event) {
-        debugger; // Browser will be forced to stop here sine the framework  skips it during DevTools debug.
+        //debugger; // Browser will be forced to stop here sine the framework  skips it during DevTools debug.
        event.preventDefault(); 
         
         const fields = {};

@@ -10,33 +10,50 @@
                 options={busOptions}
                 onchange={handleBusChange}>
             </lightning-combobox>
+            <lightning-combobox
+                name="RouteSelector"
+                label="Select a Route to Schedule"
+                value={selectedRouteId}
+                placeholder="Choose Active Route..."
+                options={routeOptions}
+                onchange={handleRouteChange}>
+              
+            </lightning-combobox>
+             <lightning-combobox
+                name="RouteTime"
+                label="Select a Time Slot to Schedule"
+                value={routeTime}
+                placeholder="Choose Active Time Slot..."
+                options={timeOptions}
+                onchange={handleRouteTimeChange}>
+              
+            </lightning-combobox>
+           <lightning-combobox
+                name="StatusSelector"
+                label="Select a Status to Schedule"
+                value={status}
+                placeholder="Choose Active Status..."
+                options={statusOptions}
+                onchange={handleStatusChange}>
+              
+            </lightning-combobox>
+            
+            <lightning-input 
+                type="date" 
+                name="departureDate" 
+                label="Select Departure Date" 
+                value={selectedDate}
+                placeholder="Choose Departure Date..."
+                min={todayDate}
+                onchange={handleDepartureDateChange}>
+            </lightning-input>
 
-            <template if:true={selectedBusId}>
-                <div class="slds-var-m-top_medium">
-                    <lightning-record-edit-form 
-                        object-api-name={objectName} 
-                        onsuccess={handleSuccess}>
-                        
-                        <div class="slds-grid slds-wrap slds-gutters">
-                            <template for:each={fieldList} for:item="field">
-                                <div key={field} class="slds-col slds-size_1-of-2 slds-var-m-bottom_small">
-                                    
-                                    <lightning-input-field field-name={field}></lightning-input-field>
-                                    
-                                </div>
-                            </template>
-
-                            <div class="slds-col slds-size_1-of-2 slds-var-m-bottom_small">
-                                <lightning-input-field field-name="Bus__c" value={selectedBusId}></lightning-input-field>
-                            </div>
-                        </div>
-
-                        <div class="slds-var-m-top_medium">
-                            <lightning-button variant="brand" type="submit" label="Create Route Schedule Slot"></lightning-button>
-                        </div>
-                    </lightning-record-edit-form>
-                </div>
-            </template>
+            <lightning-button 
+                class="slds-var-m-top_medium" 
+                variant="brand" 
+                label="Save Schedule" 
+                onclick={handleSaveSchedule}>   
+            </lightning-button>
 
         </div>
     </lightning-card>

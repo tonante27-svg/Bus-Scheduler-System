@@ -1,0 +1,26 @@
+<template>
+     <lightning-card hide-header label="Passenger Record Picker Card">
+        <p class="slds-var-p-horizontal_small">
+            <lightning-record-picker
+                label="Select Passenger"
+                placeholder="Select primary Passenger..."
+                object-api-name="Contact"
+                display-info={displayInfo}
+                matching-info={matchingInfo}
+                onchange={handlePassengerChange}
+            ></lightning-record-picker>
+        </p>
+    </lightning-card>
+     <lightning-card hide-header label="Rider Record Picker Card">
+        <p class="slds-var-p-horizontal_small">
+            <lightning-record-picker
+                label="Select Rider"
+                placeholder="Select an backup Rider..."
+                object-api-name="Contact"
+                display-info={displayInfo}
+                matching-info={matchingInfo}
+                onchange={handleRiderChange}
+            ></lightning-record-picker>
+        </p>
+    </lightning-card>
+</template>

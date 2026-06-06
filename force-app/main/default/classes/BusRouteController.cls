@@ -19,6 +19,6 @@ public with sharing class BusRouteController {
      */
     @AuraEnabled(cacheable=true)
     public static List<Bus_Route__c> getAllRoutes() {
-        return [SELECT Id, Name FROM Bus_Route__c WITH USER_MODE ORDER BY Name ASC LIMIT 100];
+        return [SELECT Id, Name,Start_Location__c,End_Location__c FROM Bus_Route__c WITH USER_MODE ORDER BY Name ASC LIMIT 100];
     }
 }
